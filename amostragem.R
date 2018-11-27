@@ -10,7 +10,7 @@ doms <- read_csv2('Domicilio01_PR.csv', locale = locale(encoding = 'latin1'))
 psu_ssu <- merge(psu_ssu, doms[ , c(1, 3)], by = 'Cod_setor')
 write_csv(psu_ssu, "psu_ssu.csv")
 
-pinhais <- read_sf('41SEE250GC_SIR.shp')
+pinhais <- read_sf('./mapa_parana/41SEE250GC_SIR.shp')
 pinhais <- pinhais %>%
   filter(NM_MUNICIP == 'PINHAIS') %>%
   transmute(Cod_setor = as.numeric(CD_GEOCODI)) %>%
@@ -20,4 +20,4 @@ pinhais <- pinhais %>%
 psu <- SamplePPS(psu.ssu = psu_ssu, psu = 45)
 ssu <- SampleSystematic(psu.ssu = psu, su = 30, write = TRUE)
 
-MapkmlPSU(shape = pinhais, psu = psu[1, 1], id = 1)
+MapkmlPSU(shape = pinhais, psu = psu[, 1], id = 1)
