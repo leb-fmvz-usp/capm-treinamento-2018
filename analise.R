@@ -10,9 +10,9 @@ cat("\014")
 # Pinhais, Brazil." Preventive veterinary medicine 158 (2018): 169-177.
 
 ## Dados das entrevistas -------------------------------------------------------
-banco1 <- read_csv("banco1.csv")
+banco1 <- read_csv("banco1.csv", locale = locale(encoding = "latin1"))
 psu_ssu <- read_csv("psu_ssu.csv")
-banco2 <- read_csv("banco2.csv")
+banco2 <- read_csv("banco2.csv", locale = locale(encoding = "latin1"))
 dogs <- filter(banco2, especie == "cao" | especie3 == "cao")
 cats <- filter(banco2, especie == "gato" | especie3 == "gato")
 
@@ -22,7 +22,7 @@ FreqTab(banco1$entrevista)
 ## Estimativas -----------------------------------------------------------------
 
 # Populacao humana em 2017
-pinhais2017 <- 129445
+pop_municipio2017 <- 129445
 
 # Proporcao de domicilios com caes e gatos
 names(banco1)
@@ -44,7 +44,7 @@ design_cal <- DesignSurvey(banco1_comp, psu.ssu = psu_ssu,
                            psu.col = "codigo_do_setor_censitario",
                            ssu.col = "ID",
                            cal.col = "quantas_pessoas",
-                           cal.N = pinhais2017)
+                           cal.N = pop_municipio2017)
 summary(design)
 summary(design_cal)
 
@@ -216,7 +216,7 @@ cities <- cities[, c(1, 3)]
 names(cities)[1] <- "NM_MUNICIP"
 
 # Mapa com as cidades de Parana
-pr <- read_sf("./mapa_parana/41MUE250GC_SIR.shp", options = "ENCODING=windows-1252")
+pr <- read_sf("./mapa_estado/41MUE250GC_SIR.shp", options = "ENCODING=windows-1252")
 names(pr)
 pr$NM_MUNICIP <- str_to_title(iconv(pr$NM_MUNICIP, to='ASCII//TRANSLIT'))
 pr$NM_MUNICIP <- gsub("Dos", "dos", pr$NM_MUNICIP)
@@ -260,7 +260,7 @@ ggplot() +
 #dev.off()
 
 # Mapa das cidades de Parana
-pr_c <- read_sf("./mapa_parana/41MUE250GC_SIR.shp", options = "ENCODING=windows-1252")
+pr_c <- read_sf("./mapa_estado/41MUE250GC_SIR.shp", options = "ENCODING=windows-1252")
 pr_c$NM_MUNICIP <- str_to_title(iconv(pr_c$NM_MUNICIP, to='ASCII//TRANSLIT'))
 pr_c$NM_MUNICIP <- gsub("Dos", "dos", pr_c$NM_MUNICIP)
 pr_c <- left_join(pr_c, cities_c)
@@ -301,7 +301,7 @@ cls_c <- c("blue3", "orange", "black")
 PlotImmigrationFlow(cats,
                     n.sources = 2,
                     source = "municipio_de_aquisicao",
-                    destination = "pinhais",
+                    destination = "Pinhais",
                     agg.sources.prefix = "Outras ",
                     agg.sources.suffix = " Cidades",
                     cls = cls_c)
@@ -402,16 +402,16 @@ CalculatePopChange(glob_N1, variable = "N1", t2 = 10, t1 = 0)
 CalculatePopChange(glob_ns1, variable = "ns1", t2 = 10, t1 = 0)
 
 ## Populacao humana projetada (IBGE)
-parana2017 <- 11320892
-parana2027 <- 11929009
+pop_estado2017 <- 11320892
+pop_estado2027 <- 11929009
 
 # Pinhais 2027, pressupondo uma razao constante entre as populacoes de
 # Pinhais e Parana ao longo da decada
-pinhais2027 <- parana2027 * (pinhais2017 / parana2017)
+pop_municipio2027 <- pop_estado2027 * (pop_municipio2017 / pop_estado2017)
 
 # Mudanca
-pinhais2027 / pinhais2017
-pinhais2027 - pinhais2017
+pop_municipio2027 / pop_municipio2017
+pop_municipio2027 - pop_municipio2017
 
 ## Taxas de esterilizacao propostas
 pars2 <- iasa_data$pars
@@ -426,3 +426,4 @@ glob2_ns1 <- CalculateGlobalSens(iasa2, ranges2, sensv = "ns1", all = TRUE)
 # capm é 0.13.6 ou superior. As mudancas decorrentes da versao nao alteram as
 # conclusoes do artigo e recomenda-se usar a mais recente.
 CalculatePopChange(glob2_ns1, variable = "ns1", t2 = 10, t1 = 0)
+

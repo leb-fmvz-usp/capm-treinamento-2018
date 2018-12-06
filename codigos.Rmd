@@ -42,7 +42,7 @@ doms <- read_csv2("Domicilio01_PR.csv", locale = locale(encoding = "latin1"))
 psu_ssu <- merge(psu_ssu, doms[ , c(1, 3)], by = 'Cod_setor')
 write_csv(psu_ssu, "psu_ssu.csv")
 
-pinhais <- read_sf("./mapa_parana/41MUE250GC_SIR.shp")
+pinhais <- read_sf("./mapa_estado/41MUE250GC_SIR.shp")
 pinhais <- pinhais %>%
   filter(NM_MUNICIP == "PINHAIS") %>%
   transmute(Cod_setor = as.numeric(CD_GEOCODI)) %>%
@@ -66,7 +66,7 @@ doms <- read_csv2('Domicilio01_PR.csv', locale = locale(encoding = 'latin1'))
 psu_ssu <- merge(psu_ssu, doms[ , c(1, 3)], by = 'Cod_setor')
 write_csv(psu_ssu, "psu_ssu.csv")
 
-pinhais <- read_sf('./mapa_parana/41SEE250GC_SIR.shp')
+pinhais <- read_sf('./mapa_estado/41SEE250GC_SIR.shp')
 pinhais <- pinhais %>%
   filter(NM_MUNICIP == 'PINHAIS') %>%
   transmute(Cod_setor = as.numeric(CD_GEOCODI)) %>%
@@ -96,7 +96,7 @@ FreqTab(banco1$entrevista)
 
 ## Populacão humana em 2017
 ```{r}
-pinhais2017 <- 129445
+pop_municipio2017 <- 129445
 ```
 
 ## Presença de Cães e gatos nos domicílios
@@ -123,7 +123,7 @@ design_cal <- DesignSurvey(banco1_comp, psu.ssu = psu_ssu,
                            psu.col = "codigo_do_setor_censitario",
                            ssu.col = "ID",
                            cal.col = "quantas_pessoas",
-                           cal.N = pinhais2017)
+                           cal.N = pop_municipio2017)
 summary(design)
 summary(design_cal)
 ```
@@ -348,7 +348,7 @@ names(cities)[1] <- "NM_MUNICIP"
 
 ### Mapa com as cidades de Paraná
 ```{r}
-pr <- read_sf("./mapa_parana/41MUE250GC_SIR.shp", options = "ENCODING=windows-1252")
+pr <- read_sf("./mapa_estado/41MUE250GC_SIR.shp", options = "ENCODING=windows-1252")
 names(pr)
 pr$NM_MUNICIP <- str_to_title(iconv(pr$NM_MUNICIP, to='ASCII//TRANSLIT'))
 pr$NM_MUNICIP <- gsub("Dos", "dos", pr$NM_MUNICIP)
@@ -401,7 +401,7 @@ ggplot() +
 
 # Mapa das cidades de Paraná
 ```{r}
-pr_c <- read_sf("./mapa_parana/41MUE250GC_SIR.shp", options = "ENCODING=windows-1252")
+pr_c <- read_sf("./mapa_estado/41MUE250GC_SIR.shp", options = "ENCODING=windows-1252")
 pr_c$NM_MUNICIP <- str_to_title(iconv(pr_c$NM_MUNICIP, to='ASCII//TRANSLIT'))
 pr_c$NM_MUNICIP <- gsub("Dos", "dos", pr_c$NM_MUNICIP)
 pr_c <- left_join(pr_c, cities_c)
@@ -569,13 +569,13 @@ parana2027 <- 11929009
 
 ### Pinhais 2027, pressupondo uma razão constante entre as populações de Pinhais e Paraná ao longo da decada
 ```{r}
-pinhais2027 <- parana2027 * (pinhais2017 / parana2017)
+pop_municipio2027 <- parana2027 * (pop_municipio2017 / parana2017)
 ```
 
 ### Mudança
 ```{r}
-pinhais2027 / pinhais2017
-pinhais2027 - pinhais2017
+pop_municipio2027 / pop_municipio2017
+pop_municipio2027 - pop_municipio2017
 ```
 
 ## Taxas de esterilização propostas
