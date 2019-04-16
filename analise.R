@@ -355,10 +355,7 @@ iasa <- SolveIASA(pars = iasa_data$pars, init = iasa_data$init, time = 0:10)
 ## Analise de sensibilidade
 
 # Global
-# Os resultados podem mudar um pouco devido ah estocasticidade. Quando
-# comparados com os resultados do artigo, ha uma variacao maior se a versao do
-# capm é 0.13.6 ou superior. As mudanca decorrentes da versao nao alteram as
-# conclusoes do artigo e recomenda-se usar a mais recente.
+# Os resultados podem mudar um pouco devido ah estocasticidade.
 ranges <- SetRanges(pars = iasa_data$pars, .1)
 glob_N1 <- CalculateGlobalSens(iasa, ranges, sensv = "N1", all = TRUE)
 glob_ns1 <- CalculateGlobalSens(iasa, ranges, sensv = "ns1", all = TRUE)
@@ -394,10 +391,7 @@ grid.arrange(gg_loc_N1, gg_loc_ns1, ncol = 2)
 #dev.off()
 
 ## Mudanca entre 2017 e 2027
-# Os resultados podem mudar um pouco devido ah estocasticidade. Quando
-# comparados com os resultados do artigo, ha uma variacao maior se a versao do
-# capm é 0.13.6 ou superior. As mudancas decorrentes da versao nao alteram as
-# conclusoes do artigo e recomenda-se usar a mais recente.
+# Os resultados podem mudar um pouco devido ah estocasticidade.
 CalculatePopChange(glob_N1, variable = "N1", t2 = 10, t1 = 0)
 CalculatePopChange(glob_ns1, variable = "ns1", t2 = 10, t1 = 0)
 
@@ -421,9 +415,6 @@ iasa2 <- SolveIASA(pars = pars2, init = iasa_data$init, time = 0:10)
 ranges2 <- SetRanges(pars = pars2, .1)
 glob2_ns1 <- CalculateGlobalSens(iasa2, ranges2, sensv = "ns1", all = TRUE)
 
-# Os resultados podem mudar um pouco devido ah estocasticidade. Quando
-# comparados com os resultados do artigo, ha uma variacao maior se a versao do
-# capm é 0.13.6 ou superior. As mudancas decorrentes da versao nao alteram as
-# conclusoes do artigo e recomenda-se usar a mais recente.
+# Os resultados podem mudar um pouco devido ah estocasticidade.
 CalculatePopChange(glob2_ns1, variable = "ns1", t2 = 10, t1 = 0)
 
